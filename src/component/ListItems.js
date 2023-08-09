@@ -17,21 +17,15 @@ export const mainListItems = (
     </ListItemButton>
     <ListItemButton>
       <ListItemIcon>
-        <GroupsIcon />
-      </ListItemIcon>
-      <ListItemText primary="Patients" />
-    </ListItemButton>
-    <ListItemButton>
-      <ListItemIcon>
         <AssessmentIcon />
       </ListItemIcon>
-      <ListItemText primary="Tests" />
+      <ListItemText primary="Profile" />
     </ListItemButton>
     <ListItemButton>
       <ListItemIcon>
         <MedicationIcon />
       </ListItemIcon>
-      <ListItemText primary="Doctors" />
+      <ListItemText primary="Upload" />
     </ListItemButton>
   </React.Fragment>
 );
