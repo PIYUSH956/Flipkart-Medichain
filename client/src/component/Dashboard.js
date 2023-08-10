@@ -38,6 +38,13 @@ import Orders from "./Orders";
 import Upload from "./Upload";
 import Profile from './Profile';
 import { Button } from "@mui/material";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import GroupsIcon from "@mui/icons-material/Groups";
+import AssessmentIcon from "@mui/icons-material/Assessment";
+import MedicationIcon from "@mui/icons-material/Medication";
 
 const columns = [
   { field: 'id', headerName: 'ID', width: 70 },
@@ -231,7 +238,31 @@ export default function Dashboard() {
             </IconButton>
           </Toolbar>
           <Divider />
-          <List component="nav" onClick={handleButton}>{mainListItems}</List>
+          <List component="nav" onClick={handleButton}>
+            <ListItemButton>
+              <ListItemIcon>
+                <DashboardIcon />
+              </ListItemIcon>
+              {selected == "Dashboard" && (
+                <ListItemText sx={{ color: "red" }} primary="Dashboard" />
+              )}
+              {selected != "Dashboard" && (
+                <ListItemText sx={{ color: "black" }} primary="Dashboard" />
+              )}
+            </ListItemButton>
+            <ListItemButton>
+              <ListItemIcon>
+                <AssessmentIcon />
+              </ListItemIcon>
+              <ListItemText primary="Profile" />
+            </ListItemButton>
+            <ListItemButton>
+              <ListItemIcon>
+                <MedicationIcon />
+              </ListItemIcon>
+              <ListItemText primary="Upload" />
+            </ListItemButton>
+          </List>
         </Drawer>
         <Box
           component="main"
@@ -243,179 +274,202 @@ export default function Dashboard() {
             flexGrow: 1,
             height: "100vh",
             overflow: "auto",
-            marginTop: "90px"
+            marginTop: "90px",
           }}
         >
-
-          {option == "Dashboard" && <>
-            {selected.length != 0 && <button onClick={(e) => setIsOpen(!isOpen)}>
-              Share
-            </button>}
-            {selected.length != 0 && <button onClick={(e) => setIsAccessOpen(!isAccessOpen)}>
-              Check Share Access
-            </button>}
-            {selected.length != 0 && <button onClick={handleDelete}>
-              Delete
-            </button>}
-
-            <ReactModal
-              isOpen={isOpen}
-              contentLabel="Example Modal"
-            >
-
-              <Card sx={{ maxWidth: 345, marginLeft: '500px', marginTop: '100px' }}>
-                <CardHeader
-                  avatar={
-                    <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                      R
-                    </Avatar>
-                  }
-
-                  title="User Name"
-                  subheader={new Date().getDate() + " / " + (new Date().getMonth() + 1) + " / " + new Date().getFullYear()}
-                />
-
-
-                <CardContent>
-                  {"Total File Selected " + selected.length}
-                  {selected.map((e) => {
-                    return (
-                      <Typography variant="body2" color="text.secondary">
-                        {e.firstName}
-                      </Typography>
-                    )
-                  })
-                  }
-                </CardContent>
-
-                <TextField
-                  margin="normal"
-                  required
-                  fullWidth
-                  id="UID"
-                  label="UID"
-                  name="UID"
-                  autoFocus
-                  onChange={(e) => setUid(e.target.value)}
-                />
-                <InputLabel id="demo-simple-select-label">Duration</InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={duration}
-                  label="Age"
-                  onChange={(e) => setDuration(e.target.value)}
+          {option == "Dashboard" && (
+            <>
+              {selected.length != 0 && (
+                <button
+                  className="custom-btn candy-button"
+                  onClick={(e) => setIsOpen(!isOpen)}
                 >
-                  <MenuItem value="1">1 Days</MenuItem>
-                  <MenuItem value="2">2 Days</MenuItem>
-                  <MenuItem value="4">4 Days</MenuItem>
-                  <MenuItem value="6">6 Days</MenuItem>
-                  <MenuItem value="8">8 Days</MenuItem>
-                  <MenuItem value="10">10 Days</MenuItem>
-                </Select>
-                <div>
-                  <Button onClick={handleShare}> Share </Button>
-                  <Button onClick={(e) => setIsOpen(!isOpen)}> Close </Button>
-                </div>
-              </Card>
+                  Share
+                </button>
+              )}
+              {selected.length != 0 && (
+                <button
+                  className="custom-btn candy-button"
+                  onClick={(e) => setIsAccessOpen(!isAccessOpen)}
+                >
+                  Check Share Access
+                </button>
+              )}
+              {selected.length != 0 && (
+                <button
+                  className="custom-btn candy-button"
+                  onClick={handleDelete}
+                >
+                  Delete
+                </button>
+              )}
 
+              <ReactModal isOpen={isOpen} contentLabel="Example Modal">
+                <Card
+                  sx={{
+                    maxWidth: 345,
+                    marginLeft: "500px",
+                    marginTop: "100px",
+                  }}
+                >
+                  <CardHeader
+                    avatar={
+                      <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+                        R
+                      </Avatar>
+                    }
+                    title="User Name"
+                    subheader={
+                      new Date().getDate() +
+                      " / " +
+                      (new Date().getMonth() + 1) +
+                      " / " +
+                      new Date().getFullYear()
+                    }
+                  />
 
-            </ReactModal>
+                  <CardContent>
+                    {"Total File Selected " + selected.length}
+                    {selected.map((e) => {
+                      return (
+                        <Typography variant="body2" color="text.secondary">
+                          {e.firstName}
+                        </Typography>
+                      );
+                    })}
+                  </CardContent>
 
-            <ReactModal
-              isOpen={isAccessOpen}
-              contentLabel="Example Modal"
-            >
+                  <TextField
+                    margin="normal"
+                    required
+                    fullWidth
+                    id="UID"
+                    label="UID"
+                    name="UID"
+                    autoFocus
+                    onChange={(e) => setUid(e.target.value)}
+                  />
+                  <InputLabel id="demo-simple-select-label">
+                    Duration
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={duration}
+                    label="Age"
+                    onChange={(e) => setDuration(e.target.value)}
+                  >
+                    <MenuItem value="1">1 Days</MenuItem>
+                    <MenuItem value="2">2 Days</MenuItem>
+                    <MenuItem value="4">4 Days</MenuItem>
+                    <MenuItem value="6">6 Days</MenuItem>
+                    <MenuItem value="8">8 Days</MenuItem>
+                    <MenuItem value="10">10 Days</MenuItem>
+                  </Select>
+                  <div>
+                    <button
+                      className="custom-btn candy-button"
+                      onClick={handleShare}
+                    >
+                      {" "}
+                      Share{" "}
+                    </button>
+                    <button
+                      className="custom-btn candy-button"
+                      onClick={(e) => setIsOpen(!isOpen)}
+                    >
+                      {" "}
+                      Close{" "}
+                    </button>
+                  </div>
+                </Card>
+              </ReactModal>
 
-              <Card sx={{ maxWidth: 345, marginLeft: '500px', marginTop: '100px' }}>
-                <CardHeader
-                  avatar={
-                    <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                      R
-                    </Avatar>
-                  }
+              <ReactModal isOpen={isAccessOpen} contentLabel="Example Modal">
+                <Card
+                  sx={{
+                    maxWidth: 345,
+                    marginLeft: "500px",
+                    marginTop: "100px",
+                  }}
+                >
+                  <CardHeader
+                    avatar={
+                      <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+                        R
+                      </Avatar>
+                    }
+                    title="User Name"
+                    subheader={
+                      new Date().getDate() +
+                      " / " +
+                      (new Date().getMonth() + 1) +
+                      " / " +
+                      new Date().getFullYear()
+                    }
+                  />
 
-                  title="User Name"
-                  subheader={new Date().getDate() + " / " + (new Date().getMonth() + 1) + " / " + new Date().getFullYear()}
-                />
+                  <CardContent>
+                    {"Total File Selected " + selected.length}
+                    {selected.map((e) => {
+                      return (
+                        <Typography variant="body2" color="text.secondary">
+                          {e.firstName}
+                        </Typography>
+                      );
+                    })}
+                  </CardContent>
 
-
-                <CardContent>
-                  {"Total File Selected " + selected.length}
-                  {selected.map((e) => {
-                    return (
-                      <Typography variant="body2" color="text.secondary">
-                        {e.firstName}
-                      </Typography>
-                    )
-                  })
-                  }
-                </CardContent>
-
-                <Grid container spacing={2}>
-                  <Grid item xs={10}>
-                    <TextField
-                      margin="normal"
-                      required
-                      fullWidth
-                      id="UID"
-                      label="UID"
-                      name="UID"
-                      disabled
-                      autoFocus
-                      onChange={(e) => setUid(e.target.value)}
-                    />
+                  <Grid container spacing={2}>
+                    <Grid item xs={10}>
+                      <TextField
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="UID"
+                        label="UID"
+                        name="UID"
+                        disabled
+                        autoFocus
+                        onChange={(e) => setUid(e.target.value)}
+                      />
+                    </Grid>
+                    <Grid item xs={2}>
+                      <DeleteIcon sx={{ marginTop: "30px" }} />
+                      {/* <h1>Hi</h1> */}
+                    </Grid>
                   </Grid>
-                  <Grid item xs={2}>
-                    <DeleteIcon sx={{marginTop:'30px'}} />
-                    {/* <h1>Hi</h1> */}
-                  </Grid>
 
-                  </Grid>
+                  <div>
+                    <button
+                      className="custom-btn candy-button"
+                      onClick={(e) => setIsAccessOpen(!isAccessOpen)}
+                    >
+                      {" "}
+                      Close{" "}
+                    </button>
+                  </div>
+                </Card>
+              </ReactModal>
 
+              <DataGrid
+                rows={rows}
+                columns={columns}
+                checkboxSelection
+                onRowSelectionModelChange={(ids) => onRowsSelectionHandler(ids)}
+                initialState={{
+                  pagination: {
+                    paginationModel: { page: 0, pageSize: 10 },
+                  },
+                }}
+                pageSizeOptions={[5, 10]}
+              />
+            </>
+          )}
 
+          {option == "Upload" && <Upload />}
 
-
-
-                <div>
-               
-                  <Button onClick={(e) => setIsAccessOpen(!isAccessOpen)}> Close </Button>
-                </div>
-              </Card>
-
-
-            </ReactModal>
-
-            <DataGrid
-              rows={rows}
-              columns={columns}
-              checkboxSelection
-              onRowSelectionModelChange={(ids) => onRowsSelectionHandler(ids)}
-              initialState={{
-                pagination: {
-                  paginationModel: { page: 0, pageSize: 10 },
-                },
-              }}
-              pageSizeOptions={[5, 10]}
-
-            />
-
-          </>
-          }
-
-          {option == "Upload" &&
-
-            <Upload />
-
-          }
-
-          {option == "Profile" &&
-
-            <Profile />
-
-          }
-
-
+          {option == "Profile" && <Profile />}
         </Box>
       </Box>
     </ThemeProvider>

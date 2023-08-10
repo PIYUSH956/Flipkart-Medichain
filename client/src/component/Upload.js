@@ -42,34 +42,44 @@ export default function Upload() {
     setFileName(e.target.files[0].name);
   }
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card sx={{ maxWidth: 345, margin: "auto" }}>
       <CardHeader
         avatar={
           <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
             R
           </Avatar>
         }
-      
         title="User Name"
-        subheader={new Date().getDate() + " / " + (new Date().getMonth()+1) + " / " + new Date().getFullYear() }
+        subheader={
+          new Date().getDate() +
+          " / " +
+          (new Date().getMonth() + 1) +
+          " / " +
+          new Date().getFullYear()
+        }
       />
       <CardMedia
         component="img"
         height="194"
         image={require("./uploadicon.png")}
-        onClick={(e)=>{inputRef.current.click()}}
+        onClick={(e) => {
+          inputRef.current.click();
+        }}
         alt="Paella dish"
       />
-      <input ref={inputRef} style={{display:'none'}} type="file" onChange={handleFileChange} /> 
-    
+      <input
+        ref={inputRef}
+        style={{ display: "none" }}
+        type="file"
+        onChange={handleFileChange}
+      />
+
       <CardContent>
         <Typography variant="body2" color="text.secondary">
-            {fileName && "Selected File " + fileName}
+          {fileName && "Selected File " + fileName}
           <p>Upload Your Document Here to Share or Store </p>
         </Typography>
       </CardContent>
-     
-     
     </Card>
   );
 }

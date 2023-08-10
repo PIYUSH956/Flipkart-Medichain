@@ -29,3 +29,10 @@ export const mainListItems = (
     </ListItemButton>
   </React.Fragment>
 );
+
+
+// export const mainListItems = [
+//   { text: "Dashboard", icon: <DashboardIcon />, active: true },
+//   { text: "Upload", icon: <MedicationIcon />, active: false },
+//   { text: "Profile", icon: <AssessmentIcon />, active: false },
+// ];
