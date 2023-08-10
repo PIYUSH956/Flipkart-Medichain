@@ -24,6 +24,7 @@ import Deposits from "./Deposits";
 import Orders from "./Orders";
 import { useNavigate } from "react-router-dom";
 import Upload from "./Upload";
+import Profile from './Profile';
 
 const columns = [
   { field: 'id', headerName: 'ID', width: 70 },
@@ -136,7 +137,7 @@ export default function Dashboard() {
   const [option, setOption] = React.useState("Dashboard");
 
   const handleButton = (e) => {
-   
+
     setOption(e.target.innerText);
     console.log(option);
   }
@@ -206,7 +207,7 @@ export default function Dashboard() {
             flexGrow: 1,
             height: "100vh",
             overflow: "auto",
-            marginTop:"90px"
+            marginTop: "90px"
           }}
         >
 
@@ -224,14 +225,17 @@ export default function Dashboard() {
             />
           }
 
-          {option == "Upload" && 
-          
+          {option == "Upload" &&
+
             <Upload />
-          
+
           }
 
+          {option == "Profile" &&
 
+            <Profile />
 
+          }
 
 
         </Box>
