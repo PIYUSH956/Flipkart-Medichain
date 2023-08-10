@@ -3,8 +3,21 @@ import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import MuiDrawer from "@mui/material/Drawer";
 import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
+import Card from '@mui/material/Card';
+import CardHeader from '@mui/material/CardHeader';
+import Avatar from '@mui/material/Avatar';
+import { red } from '@mui/material/colors';
+import DeleteIcon from '@mui/icons-material/Delete';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import CardMedia from '@mui/material/CardMedia';
+import CardContent from '@mui/material/CardContent';
 import MuiAppBar from "@mui/material/AppBar";
+import ShareIcon from '@mui/icons-material/Share';
 import Toolbar from "@mui/material/Toolbar";
+import ReactModal from 'react-modal';
 import List from "@mui/material/List";
 import Typography from "@mui/material/Typography";
 import { DataGrid } from '@mui/x-data-grid';
@@ -22,9 +35,9 @@ import { mainListItems } from "./ListItems";
 import Chart from "./Chart";
 import Deposits from "./Deposits";
 import Orders from "./Orders";
-import { useNavigate } from "react-router-dom";
 import Upload from "./Upload";
 import Profile from './Profile';
+import { Button } from "@mui/material";
 
 const columns = [
   { field: 'id', headerName: 'ID', width: 70 },
@@ -44,19 +57,20 @@ const columns = [
     width: 160,
     valueGetter: (params) =>
       `${params.row.firstName || ''} ${params.row.lastName || ''}`,
-  },
+  }, { field: 'Download', headerName: 'Download', width: 130 },
+
 ];
 
 const rows = [
-  { id: 1, lastName: 'Snow', firstName: 'Jon', age: 35 },
-  { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 42 },
-  { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 45 },
-  { id: 4, lastName: 'Stark', firstName: 'Arya', age: 16 },
-  { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null },
-  { id: 6, lastName: 'Melisandre', firstName: null, age: 150 },
-  { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
-  { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
-  { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
+  { id: 1, lastName: 'Snow', firstName: 'Jon', age: 35, Download: 'Download File' },
+  { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 42, Download: 'Download File' },
+  { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 45, Download: 'Download File' },
+  { id: 4, lastName: 'Stark', firstName: 'Arya', age: 16, Download: 'Download File' },
+  { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null, Download: 'Download File' },
+  { id: 6, lastName: 'Melisandre', firstName: null, age: 150, Download: 'Download File' },
+  { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44, Download: 'Download File' },
+  { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36, Download: 'Download File' },
+  { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65, Download: 'Download File' },
 ];
 
 
@@ -128,8 +142,13 @@ const Drawer = styled(MuiDrawer, {
 const defaultTheme = createTheme();
 
 export default function Dashboard() {
-  const navigate = useNavigate();
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
+  const [selected, setSelected] = React.useState([]);
+  const [isOpen, setIsOpen] = React.useState(false);
+  const [isAccessOpen, setIsAccessOpen] = React.useState(false);
+  const [uid, setUid] = React.useState(null);
+  const [duration, setDuration] = React.useState(0);
+
   const toggleDrawer = () => {
     setOpen(!open);
   };
@@ -141,6 +160,23 @@ export default function Dashboard() {
     setOption(e.target.innerText);
     console.log(option);
   }
+
+  const handleShare = (e) => {
+
+    console.log(duration);
+
+  }
+
+  const handleDelete = (e) =>{
+    console.log(selected);
+  }
+
+  const onRowsSelectionHandler = (ids) => {
+    const selectedRowsData = ids.map((id) => rows.find((row) => row.id === id));
+    // Array
+    console.log(selectedRowsData);
+    setSelected(selectedRowsData);
+  };
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -211,18 +247,160 @@ export default function Dashboard() {
           }}
         >
 
-          {option == "Dashboard" &&
+          {option == "Dashboard" && <>
+            {selected.length != 0 && <button onClick={(e) => setIsOpen(!isOpen)}>
+              Share
+            </button>}
+            {selected.length != 0 && <button onClick={(e) => setIsAccessOpen(!isAccessOpen)}>
+              Check Share Access
+            </button>}
+            {selected.length != 0 && <button onClick={handleDelete}>
+              Delete
+            </button>}
+
+            <ReactModal
+              isOpen={isOpen}
+              contentLabel="Example Modal"
+            >
+
+              <Card sx={{ maxWidth: 345, marginLeft: '500px', marginTop: '100px' }}>
+                <CardHeader
+                  avatar={
+                    <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+                      R
+                    </Avatar>
+                  }
+
+                  title="User Name"
+                  subheader={new Date().getDate() + " / " + (new Date().getMonth() + 1) + " / " + new Date().getFullYear()}
+                />
+
+
+                <CardContent>
+                  {"Total File Selected " + selected.length}
+                  {selected.map((e) => {
+                    return (
+                      <Typography variant="body2" color="text.secondary">
+                        {e.firstName}
+                      </Typography>
+                    )
+                  })
+                  }
+                </CardContent>
+
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="UID"
+                  label="UID"
+                  name="UID"
+                  autoFocus
+                  onChange={(e) => setUid(e.target.value)}
+                />
+                <InputLabel id="demo-simple-select-label">Duration</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={duration}
+                  label="Age"
+                  onChange={(e) => setDuration(e.target.value)}
+                >
+                  <MenuItem value="1">1 Days</MenuItem>
+                  <MenuItem value="2">2 Days</MenuItem>
+                  <MenuItem value="4">4 Days</MenuItem>
+                  <MenuItem value="6">6 Days</MenuItem>
+                  <MenuItem value="8">8 Days</MenuItem>
+                  <MenuItem value="10">10 Days</MenuItem>
+                </Select>
+                <div>
+                  <Button onClick={handleShare}> Share </Button>
+                  <Button onClick={(e) => setIsOpen(!isOpen)}> Close </Button>
+                </div>
+              </Card>
+
+
+            </ReactModal>
+
+            <ReactModal
+              isOpen={isAccessOpen}
+              contentLabel="Example Modal"
+            >
+
+              <Card sx={{ maxWidth: 345, marginLeft: '500px', marginTop: '100px' }}>
+                <CardHeader
+                  avatar={
+                    <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+                      R
+                    </Avatar>
+                  }
+
+                  title="User Name"
+                  subheader={new Date().getDate() + " / " + (new Date().getMonth() + 1) + " / " + new Date().getFullYear()}
+                />
+
+
+                <CardContent>
+                  {"Total File Selected " + selected.length}
+                  {selected.map((e) => {
+                    return (
+                      <Typography variant="body2" color="text.secondary">
+                        {e.firstName}
+                      </Typography>
+                    )
+                  })
+                  }
+                </CardContent>
+
+                <Grid container spacing={2}>
+                  <Grid item xs={10}>
+                    <TextField
+                      margin="normal"
+                      required
+                      fullWidth
+                      id="UID"
+                      label="UID"
+                      name="UID"
+                      disabled
+                      autoFocus
+                      onChange={(e) => setUid(e.target.value)}
+                    />
+                  </Grid>
+                  <Grid item xs={2}>
+                    <DeleteIcon sx={{marginTop:'30px'}} />
+                    {/* <h1>Hi</h1> */}
+                  </Grid>
+
+                  </Grid>
+
+
+
+
+
+                <div>
+               
+                  <Button onClick={(e) => setIsAccessOpen(!isAccessOpen)}> Close </Button>
+                </div>
+              </Card>
+
+
+            </ReactModal>
+
             <DataGrid
               rows={rows}
               columns={columns}
+              checkboxSelection
+              onRowSelectionModelChange={(ids) => onRowsSelectionHandler(ids)}
               initialState={{
                 pagination: {
-                  paginationModel: { page: 0, pageSize: 5 },
+                  paginationModel: { page: 0, pageSize: 10 },
                 },
               }}
               pageSizeOptions={[5, 10]}
-              checkboxSelection
+
             />
+
+          </>
           }
 
           {option == "Upload" &&

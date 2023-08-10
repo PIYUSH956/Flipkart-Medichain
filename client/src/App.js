@@ -7,6 +7,7 @@ import Register from './component/Register';
 import Dashboard from './component/Dashboard';
 import UploadAbi from '../src/artifacts/contracts/Demo.sol/Demo.json'
 import Upload from './component/Upload';
+import DoctorDashboard from './component/DoctorDashboard';
 import { ethers } from "ethers";
 
 
@@ -62,6 +63,7 @@ function App() {
           <Route path='register' element={<Login />} />
 
           <Route path='dashboard' element={<Dashboard />} />
+          <Route path='ddashboard' element={<DoctorDashboard/>} />
           <Route path='/upload' element={<Upload />} />
 
         </Routes>
