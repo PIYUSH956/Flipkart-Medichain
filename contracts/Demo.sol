@@ -15,7 +15,7 @@ contract Demo{
     struct Patient{
         address add;
         string name;
-        string email;
+        uint dob;
         string password;
         string aadhar;
         
@@ -35,13 +35,12 @@ contract Demo{
     mapping (address=>address[]) public docToPatient;
     string[] public aadharList;//for testing
     
-    function createUser(string memory _aadhar,string memory _name,string memory _email, string memory _password) public{
+    function createUser(string memory _aadhar,string memory _name,uint _dob) public{
             require(aadharToAddress[_aadhar]==0x0000000000000000000000000000000000000000,"exit") ;
             
             Patients[msg.sender].add=msg.sender;
             Patients[msg.sender].name=_name;
-            Patients[msg.sender].email=_email;
-            Patients[msg.sender].password=_password;
+            Patients[msg.sender].dob=_dob;
             Patients[msg.sender].aadhar=_aadhar;
             aadharList.push(_aadhar); //for testing dont delete user
             aadharToAddress[_aadhar]=msg.sender;
