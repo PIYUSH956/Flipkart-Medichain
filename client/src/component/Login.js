@@ -48,14 +48,8 @@ const defaultTheme = createTheme();
 
 
 export default function Login() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
-  };
+
+
 
   const [errorMessage, setErrorMessage] = useState(null);
   const [defaultAccount, setDefaultAccount] = useState(null);
@@ -64,22 +58,17 @@ export default function Login() {
   const [aadhar, setAadhar] = useState("");
   const [name, setName] = useState("");
   const [dob, setDob] = useState('2022-04-07');
-  const [bloodGroup, setBloodGroup] = useState();
   const [gender, setGender] = useState();
-  
 
   const [blood, setBlood] = React.useState('');
 
-  const handleChangeBlood = (e) => {
-    setBlood(e.target.value);
-  };
 
-  const handleChangeGender = (e) => {
-    setGender(e.target.value);
-  };
 
   const handleLogin = (e) => {
     e.preventDefault();
+    const date = new Date(dob);
+    const unixTimestamp = Math.floor(date.getTime() / 1000);
+    console.log(dob,unixTimestamp);
     if (window.ethereum) {
       window.ethereum.request({ method: "eth_requestAccounts" }).then((result) => {
         accountChangeHandler(result[0]);
@@ -87,24 +76,16 @@ export default function Login() {
     } else {
       setErrorMessage("Install  Metamask");
     }
+
+    
   }
-
-
 
   const accountChangeHandler = (newAccount) => {
     setDefaultAccount(newAccount);
     console.log(newAccount);
     console.log(aadhar , name, dob, blood,gender);
   }
-  const handleDateChange = (date) =>{
-           setDob(date);
-  }
-  const getUserBalance = (address) => {
 
-
- 
-
-  }
   return (
     <ThemeProvider theme={defaultTheme}>
       <Grid container component="main" sx={{ height: "100vh" }}>
@@ -140,12 +121,11 @@ export default function Login() {
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-              {connButtonText}
+              {"Register New Patient"}
             </Typography>
             <Box
               component="form"
               noValidate
-              onSubmit={handleSubmit}
               sx={{ mt: 1 }}
             >
               <TextField
@@ -180,7 +160,7 @@ export default function Login() {
                 id="demo-simple-select"
                 value={blood}
                 label="Age"
-                onChange={handleChangeBlood}
+                onChange={(e) =>setBlood(e.target.value)}
               >
                 <MenuItem value="A">A</MenuItem>
                 <MenuItem value="A+">A+</MenuItem>
@@ -194,7 +174,7 @@ export default function Login() {
                 id="demo-simple-select"
                 value={gender}
                 label="Gender"
-                onChange={handleChangeGender}
+                onChange={(e) => setGender(e.target.value)}
               >
                 <MenuItem value="Male">Male</MenuItem>
                 <MenuItem value="Female">Female</MenuItem>
