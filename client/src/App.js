@@ -5,6 +5,7 @@ import Login from './component/Login';
 import Register from './component/Register';
 import Dashboard from './component/Dashboard';
 import Upload from './component/Upload';
+import DoctorDashboard from './component/DoctorDashboard';
 
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
           <Route path='register' element={<Login />} />
 
           <Route path='dashboard' element={<Dashboard />} />
+          <Route path='ddashboard' element={<DoctorDashboard/>} />
           <Route path='/upload' element={<Upload />} />
 
         </Routes>

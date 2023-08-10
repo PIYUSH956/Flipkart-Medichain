@@ -8,6 +8,10 @@ import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import Avatar from '@mui/material/Avatar';
 import { red } from '@mui/material/colors';
+import DeleteIcon from '@mui/icons-material/Delete';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
 import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import MuiAppBar from "@mui/material/AppBar";
@@ -33,6 +37,7 @@ import Deposits from "./Deposits";
 import Orders from "./Orders";
 import Upload from "./Upload";
 import Profile from './Profile';
+import { Button } from "@mui/material";
 
 const columns = [
   { field: 'id', headerName: 'ID', width: 70 },
@@ -140,7 +145,9 @@ export default function Dashboard() {
   const [open, setOpen] = React.useState(false);
   const [selected, setSelected] = React.useState([]);
   const [isOpen, setIsOpen] = React.useState(false);
-  const [uid,setUid] = React.useState(null);
+  const [isAccessOpen, setIsAccessOpen] = React.useState(false);
+  const [uid, setUid] = React.useState(null);
+  const [duration, setDuration] = React.useState(0);
 
   const toggleDrawer = () => {
     setOpen(!open);
@@ -152,6 +159,16 @@ export default function Dashboard() {
 
     setOption(e.target.innerText);
     console.log(option);
+  }
+
+  const handleShare = (e) => {
+
+    console.log(duration);
+
+  }
+
+  const handleDelete = (e) =>{
+    console.log(selected);
   }
 
   const onRowsSelectionHandler = (ids) => {
@@ -234,13 +251,19 @@ export default function Dashboard() {
             {selected.length != 0 && <button onClick={(e) => setIsOpen(!isOpen)}>
               Share
             </button>}
+            {selected.length != 0 && <button onClick={(e) => setIsAccessOpen(!isAccessOpen)}>
+              Check Share Access
+            </button>}
+            {selected.length != 0 && <button onClick={handleDelete}>
+              Delete
+            </button>}
 
             <ReactModal
               isOpen={isOpen}
               contentLabel="Example Modal"
             >
 
-              <Card sx={{ maxWidth: 345, marginLeft: '500px', marginTop: '200px' }}>
+              <Card sx={{ maxWidth: 345, marginLeft: '500px', marginTop: '100px' }}>
                 <CardHeader
                   avatar={
                     <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
@@ -275,9 +298,89 @@ export default function Dashboard() {
                   autoFocus
                   onChange={(e) => setUid(e.target.value)}
                 />
-                <button> Share </button>
-                <button onClick={(e) => setIsOpen(!isOpen)}> Close </button>
+                <InputLabel id="demo-simple-select-label">Duration</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={duration}
+                  label="Age"
+                  onChange={(e) => setDuration(e.target.value)}
+                >
+                  <MenuItem value="1">1 Days</MenuItem>
+                  <MenuItem value="2">2 Days</MenuItem>
+                  <MenuItem value="4">4 Days</MenuItem>
+                  <MenuItem value="6">6 Days</MenuItem>
+                  <MenuItem value="8">8 Days</MenuItem>
+                  <MenuItem value="10">10 Days</MenuItem>
+                </Select>
+                <div>
+                  <Button onClick={handleShare}> Share </Button>
+                  <Button onClick={(e) => setIsOpen(!isOpen)}> Close </Button>
+                </div>
+              </Card>
 
+
+            </ReactModal>
+
+            <ReactModal
+              isOpen={isAccessOpen}
+              contentLabel="Example Modal"
+            >
+
+              <Card sx={{ maxWidth: 345, marginLeft: '500px', marginTop: '100px' }}>
+                <CardHeader
+                  avatar={
+                    <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+                      R
+                    </Avatar>
+                  }
+
+                  title="User Name"
+                  subheader={new Date().getDate() + " / " + (new Date().getMonth() + 1) + " / " + new Date().getFullYear()}
+                />
+
+
+                <CardContent>
+                  {"Total File Selected " + selected.length}
+                  {selected.map((e) => {
+                    return (
+                      <Typography variant="body2" color="text.secondary">
+                        {e.firstName}
+                      </Typography>
+                    )
+                  })
+                  }
+                </CardContent>
+
+                <Grid container spacing={2}>
+                  <Grid item xs={10}>
+                    <TextField
+                      margin="normal"
+                      required
+                      fullWidth
+                      id="UID"
+                      label="UID"
+                      name="UID"
+                      disabled
+                      autoFocus
+                      onChange={(e) => setUid(e.target.value)}
+                    />
+                  </Grid>
+                  <Grid item xs={2}>
+                    <DeleteIcon sx={{marginTop:'30px'}} />
+                    {/* <h1>Hi</h1> */}
+                  </Grid>
+
+                  </Grid>
+
+
+
+
+
+                <div>
+               
+                  <Button onClick={(e) => setIsAccessOpen(!isAccessOpen)}> Close </Button>
+                </div>
               </Card>
 
 
